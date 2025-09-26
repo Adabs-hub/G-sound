@@ -63,6 +63,7 @@ const TopProducts = () => {
                     </Link>
                 </div>
             </div>
+            </div>
         </>
     );
 };
