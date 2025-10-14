@@ -23,3 +23,106 @@
         @include img-fit;
     }
 }
+
+// About page featured sections
+.about_featured {
+    padding: 5rem 2rem;
+    background: var(--bg-color);
+
+    &.alt-bg {
+        background: var(--bg-color-2);
+    }
+
+    .featured_grid {
+        @include grid-cols(3, 1fr, 2rem);
+        max-width: var(--max-width);
+        margin: 0 auto;
+
+        @include devices(lg) {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        @include devices(sm) {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .featured_item {
+        text-align: center;
+        padding: 2rem;
+        border-radius: var(--border-radius-md);
+        transition: transform 0.3s ease;
+
+        &:hover {
+            transform: translateY(-5px);
+        }
+
+        img {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 1.5rem;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-color);
+        }
+
+        p {
+            color: var(--text-color-light);
+            line-height: 1.6;
+        }
+    }
+}
+
+.about_featured_testimonials {
+    @extend .about_featured;
+    text-align: center;
+
+    .testimonial_slider {
+        max-width: 800px;
+        margin: 3rem auto 0;
+        padding: 0 1rem;
+
+        .swiper-pagination {
+            bottom: -10px;
+        }
+    }
+}
+
+.featured_stats {
+    @include grid-cols(4, 1fr, 2rem);
+    max-width: var(--max-width);
+    margin: 4rem auto 0;
+    padding: 2rem;
+    background: var(--white-color);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--box-shadow);
+
+    @include devices(lg) {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 3rem;
+    }
+
+    @include devices(sm) {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .stat_item {
+        text-align: center;
+
+        .stat_number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat_label {
+            color: var(--text-color-light);
+            font-size: 1.1rem;
+        }
+    }
+}
