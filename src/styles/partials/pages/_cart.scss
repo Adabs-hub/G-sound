@@ -1,7 +1,9 @@
+// Cart page styles
 #cart {
     @include padding-y(8rem, 8rem);
 }
 
+// Cart layout wrapper
 .cart_wrapper {
     display: grid;
     grid-template-columns: 1fr 0.5fr;
@@ -22,6 +24,7 @@
     }
 }
 
+// Left column containing cart items
 .cart_left_col {
     background: var(--bg-color-2);
     max-height: 600px;
@@ -42,6 +45,7 @@
     }
 }
 
+// Individual cart item styles
 .cart_item {
     display: grid;
     grid-template-columns: 0.25fr 0.8fr;
@@ -84,6 +88,7 @@
     }
 }
 
+// Delete item button and tooltip
 .cart_item_del {
     position: relative;
     line-height: 1;
@@ -111,6 +116,7 @@
     }
 }
 
+// Order summary section
 .order_summary_details {
     display: grid;
     gap: 1.5rem;
@@ -141,6 +147,7 @@
     }
 }
 
+// Checkout button
 .checkout_btn {
     width: 100%;
 }

@@ -8,13 +8,11 @@ import productsData from '../../data/productsData';
 import 'swiper/scss';
 import 'swiper/scss/autoplay';
 import 'swiper/scss/pagination';
-import "swiper/scss/effect-coverflow";
-
+import 'swiper/scss/effect-coverflow';
 
 const FeaturedSlider = () => {
-
+    // Filter featured products
     const featuredProducts = productsData.filter(item => item.tag === 'featured-product');
-
 
     return (
         <Swiper
@@ -22,9 +20,9 @@ const FeaturedSlider = () => {
             loop={true}
             speed={400}
             spaceBetween={100}
-            slidesPerView={"auto"}
+            slidesPerView={'auto'}
             pagination={{ clickable: true }}
-            effect={"coverflow"}
+            effect={'coverflow'}
             centeredSlides={true}
             coverflowEffect={{
                 rotate: 0,
@@ -49,28 +47,25 @@ const FeaturedSlider = () => {
             }}
             className="featured_swiper"
         >
-            {
-                featuredProducts.map((item) => {
-                    const { id, images, title, finalPrice, originalPrice, path } = item;
-                    const newPrice = displayMoney(finalPrice);
-                    const oldPrice = displayMoney(originalPrice);
+            {featuredProducts.map(({ id, images, title, finalPrice, originalPrice, path }) => {
+                const newPrice = displayMoney(finalPrice);
+                const oldPrice = displayMoney(originalPrice);
 
-                    return (
-                        <SwiperSlide key={id} className="featured_slides">
-                            <div className="featured_title">{title}</div>
-                            <figure className="featured_img">
-                                <Link to={`${path}${id}`}>
-                                    <img src={images[0]} alt="" />
-                                </Link>
-                            </figure>
-                            <h2 className="products_price">
-                                {newPrice} &nbsp;
-                                <small><del>{oldPrice}</del></small>
-                            </h2>
-                        </SwiperSlide>
-                    );
-                })
-            }
+                return (
+                    <SwiperSlide key={id} className="featured_slides">
+                        <div className="featured_title">{title}</div>
+                        <figure className="featured_img">
+                            <Link to={`${path}${id}`}>
+                                <img src={images[0]} alt={title} />
+                            </Link>
+                        </figure>
+                        <h2 className="products_price">
+                            {newPrice} &nbsp;
+                            <small><del>{oldPrice}</del></small>
+                        </h2>
+                    </SwiperSlide>
+                );
+            })}
         </Swiper>
     );
 };

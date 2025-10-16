@@ -1,5 +1,9 @@
-import {FaShippingFast, FaShieldAlt, FaTags, FaCreditCard} from 'react-icons/fa';
+import { FaShippingFast, FaShieldAlt, FaTags, FaCreditCard } from 'react-icons/fa';
 
+/**
+ * Service data containing information about available services
+ * Each service has an id, icon component, title and info text
+ */
 const servicesData = [
     {
         id: 1,
@@ -8,7 +12,7 @@ const servicesData = [
         info: "Ships in 24 Hours",
     },
     {
-        id: 2,
+        id: 2, 
         icon: <FaShieldAlt />,
         title: "Brand Warranty",
         info: "100% Original products",
@@ -16,7 +20,7 @@ const servicesData = [
     {
         id: 3,
         icon: <FaTags />,
-        title: "Exciting Deals",
+        title: "Exciting Deals", 
         info: "On all prepaid orders",
     },
     {

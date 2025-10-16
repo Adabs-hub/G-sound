@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { IoMdStar, IoMdCheckmark } from 'react-icons/io';
+import PropTypes from 'prop-types';
 import { calculateDiscount, displayMoney } from '../helpers/utils';
 import useDocTitle from '../hooks/useDocTitle';
 import useActive from '../hooks/useActive';
@@ -11,93 +12,86 @@ import RelatedSlider from '../components/sliders/RelatedSlider';
 import ProductSummary from '../components/product/ProductSummary';
 import Services from '../components/common/Services';
 
-
 const ProductDetails = () => {
-
     useDocTitle('Product Details');
-
     const { handleActive, activeClass } = useActive(0);
-
     const { addItem } = useContext(cartContext);
-
     const { productId } = useParams();
 
-    // here the 'id' received has 'string-type', so converting it to a 'Number'
     const prodId = parseInt(productId);
-
-    // showing the Product based on the received 'id'
     const product = productsData.find(item => item.id === prodId);
 
-    const { images, title, info, category, finalPrice, originalPrice, ratings, rateCount } = product;
+    if (!product) {
+        return <div>Product not found</div>;
+    }
+
+    const { 
+        images, 
+        title, 
+        info, 
+        category, 
+        finalPrice, 
+        originalPrice, 
+        ratings, 
+        rateCount 
+    } = product;
 
     const [previewImg, setPreviewImg] = useState(images[0]);
 
-
-    // handling Add-to-cart
     const handleAddItem = () => {
         addItem(product);
     };
 
-
-    // setting the very-first image on re-render
     useEffect(() => {
         setPreviewImg(images[0]);
         handleActive(0);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [images]);
+    }, [images, handleActive]);
 
-
-    // handling Preview image
-    const handlePreviewImg = (i) => {
-        setPreviewImg(images[i]);
-        handleActive(i);
+    const handlePreviewImg = (index) => {
+        setPreviewImg(images[index]);
+        handleActive(index);
     };
 
-
-    // calculating Prices
+    // Calculate prices
     const discountedPrice = originalPrice - finalPrice;
-    const newPrice = displayMoney(finalPrice);
-    const oldPrice = displayMoney(originalPrice);
-    const savedPrice = displayMoney(discountedPrice);
-    const savedDiscount = calculateDiscount(discountedPrice, originalPrice);
-
+    const priceDetails = {
+        new: displayMoney(finalPrice),
+        old: displayMoney(originalPrice),
+        saved: displayMoney(discountedPrice),
+        discount: calculateDiscount(discountedPrice, originalPrice)
+    };
 
     return (
         <>
             <section id="product_details" className="section">
                 <div className="container">
                     <div className="wrapper prod_details_wrapper">
-
-                        {/*=== Product Details Left-content ===*/}
                         <div className="prod_details_left_col">
                             <div className="prod_details_tabs">
-                                {
-                                    images.map((img, i) => (
-                                        <div
-                                            key={i}
-                                            className={`tabs_item ${activeClass(i)}`}
-                                            onClick={() => handlePreviewImg(i)}
-                                        >
-                                            <img src={img} alt="product-img" />
-                                        </div>
-                                    ))
-                                }
+                                {images.map((img, index) => (
+                                    <div
+                                        key={index}
+                                        className={`tabs_item ${activeClass(index)}`}
+                                        onClick={() => handlePreviewImg(index)}
+                                    >
+                                        <img src={img} alt={`${title} - view ${index + 1}`} />
+                                    </div>
+                                ))}
                             </div>
                             <figure className="prod_details_img">
-                                <img src={previewImg} alt="product-img" />
+                                <img src={previewImg} alt={title} />
                             </figure>
                         </div>
 
-                        {/*=== Product Details Right-content ===*/}
                         <div className="prod_details_right_col">
                             <h1 className="prod_details_title">{title}</h1>
                             <h4 className="prod_details_info">{info}</h4>
 
                             <div className="prod_details_ratings">
                                 <span className="rating_star">
-                                    {
-                                        [...Array(rateCount)].map((_, i) => <IoMdStar key={i} />)
-                                    }
+                                    {[...Array(rateCount)].map((_, index) => (
+                                        <IoMdStar key={index} />
+                                    ))}
                                 </span>
                                 <span>|</span>
                                 <Link to="*">{ratings} Ratings</Link>
@@ -108,10 +102,14 @@ const ProductDetails = () => {
                             <div className="prod_details_price">
                                 <div className="price_box">
                                     <h2 className="price">
-                                        {newPrice} &nbsp;
-                                        <small className="del_price"><del>{oldPrice}</del></small>
+                                        {priceDetails.new} &nbsp;
+                                        <small className="del_price">
+                                            <del>{priceDetails.old}</del>
+                                        </small>
                                     </h2>
-                                    <p className="saved_price">You save: {savedPrice} ({savedDiscount}%)</p>
+                                    <p className="saved_price">
+                                        You save: {priceDetails.saved} ({priceDetails.discount}%)
+                                    </p>
                                     <span className="tax_txt">(Inclusive of all taxes)</span>
                                 </div>
 
@@ -137,11 +135,11 @@ const ProductDetails = () => {
                                     type="button"
                                     className="btn"
                                     onClick={handleAddItem}
+                                    aria-label="Add to cart"
                                 >
                                     Add to cart
                                 </button>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -159,6 +157,10 @@ const ProductDetails = () => {
             <Services />
         </>
     );
+};
+
+ProductDetails.propTypes = {
+    // Component takes no props but adding PropTypes definition for future extensibility
 };
 
 export default ProductDetails;

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, A11y } from 'swiper';
 import productsData from '../../data/productsData';
@@ -7,18 +8,15 @@ import ProductCard from '../product/ProductCard';
 import 'swiper/scss';
 import 'swiper/scss/pagination';
 
-
-const RelatedSlider = (props) => {
-
-    const { category } = props;
-
-    const relatedProduct = productsData.filter(item => item.category === category);
+const RelatedSlider = ({ category }) => {
+    // Filter products by matching category
+    const relatedProducts = productsData.filter(item => item.category === category);
 
     return (
         <Swiper
             modules={[Pagination, A11y]}
             spaceBetween={10}
-            slidesPerView={"auto"}
+            slidesPerView="auto"
             pagination={{ clickable: true }}
             breakpoints={{
                 480: {
@@ -33,15 +31,17 @@ const RelatedSlider = (props) => {
             }}
             className="related_swiper"
         >
-            {
-                relatedProduct.map(item => (
-                    <SwiperSlide key={item.id}>
-                        <ProductCard {...item} />
-                    </SwiperSlide>
-                ))
-            }
+            {relatedProducts.map(product => (
+                <SwiperSlide key={product.id}>
+                    <ProductCard {...product} />
+                </SwiperSlide>
+            ))}
         </Swiper>
     );
+};
+
+RelatedSlider.propTypes = {
+    category: PropTypes.string.isRequired
 };
 
 export default RelatedSlider;
