@@ -39,6 +39,13 @@ const Header = () => {
                             <Link to="/">X-Beat</Link>
                         </h2>
                         <nav className="nav_actions">
+                            <div className="nav_links">
+                                <Link to="/">Home</Link>
+                                <Link to="/about">About Us</Link>
+                                <Link to="/products">Products</Link>
+                                <Link to="/contact">Contact</Link>
+                            </div>
+                            
                             <div className="search_action">
                                 <span onClick={() => toggleSearch(true)}>
                                     <AiOutlineSearch />
