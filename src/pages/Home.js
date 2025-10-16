@@ -1,13 +1,17 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import HeroSlider from '../components/sliders/HeroSlider';
 import FeaturedSlider from '../components/sliders/FeaturedSlider';
 import SectionsHead from '../components/common/SectionsHead';
 import TopProducts from '../components/product/TopProducts';
 import Services from '../components/common/Services';
 
-
+/**
+ * Home page component displaying hero slider, featured products,
+ * top products and services sections
+ * @returns {React.ReactElement} Home component
+ */
 const Home = () => {
-
     return (
         <main>
             <section id="hero">
@@ -31,6 +35,11 @@ const Home = () => {
             <Services />
         </main>
     );
+};
+
+// Prop type validation for child components
+SectionsHead.propTypes = {
+    heading: PropTypes.string.isRequired
 };
 
 export default Home;

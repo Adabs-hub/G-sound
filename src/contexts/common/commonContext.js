@@ -1,10 +1,11 @@
 import { createContext, useReducer } from 'react';
+import PropTypes from 'prop-types';
 import commonReducer from './commonReducer';
 
-// Common-Context
+// Common Context for managing app-wide state
 const commonContext = createContext();
 
-// Initial State
+// Initial state definition
 const initialState = {
     isFormOpen: false,
     formUserInfo: '',
@@ -12,42 +13,44 @@ const initialState = {
     searchResults: []
 };
 
-// Common-Provider Component
+/**
+ * Common Provider Component
+ * Manages form and search functionality state
+ */
 const CommonProvider = ({ children }) => {
-
     const [state, dispatch] = useReducer(commonReducer, initialState);
 
-    // Form actions
+    // Form action creators
     const toggleForm = (toggle) => {
-        return dispatch({
+        dispatch({
             type: 'TOGGLE_FORM',
             payload: { toggle }
         });
     };
 
     const setFormUserInfo = (info) => {
-        return dispatch({
-            type: 'SET_FORM_USER_INFO',
+        dispatch({
+            type: 'SET_FORM_USER_INFO', 
             payload: { info }
         });
     };
 
-    // Search actions
+    // Search action creators 
     const toggleSearch = (toggle) => {
-        return dispatch({
+        dispatch({
             type: 'TOGGLE_SEARCH',
             payload: { toggle }
         });
     };
 
     const setSearchResults = (results) => {
-        return dispatch({
+        dispatch({
             type: 'SET_SEARCH_RESULTS',
             payload: { results }
         });
     };
 
-    // Context values
+    // Context value object
     const values = {
         ...state,
         toggleForm,
@@ -61,6 +64,11 @@ const CommonProvider = ({ children }) => {
             {children}
         </commonContext.Provider>
     );
+};
+
+// PropTypes validation
+CommonProvider.propTypes = {
+    children: PropTypes.node.isRequired
 };
 
 export default commonContext;

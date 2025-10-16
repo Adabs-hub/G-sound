@@ -1,34 +1,32 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { AiOutlineSearch, AiOutlineShoppingCart, AiOutlineUser } from 'react-icons/ai';
+import PropTypes from 'prop-types';
+import { AiOutlineShoppingCart, AiOutlineUser } from 'react-icons/ai';
 import { dropdownMenu } from '../../data/headerData';
 import commonContext from '../../contexts/common/commonContext';
 import cartContext from '../../contexts/cart/cartContext';
 import AccountForm from '../form/AccountForm';
 import SearchBar from './SearchBar';
 
-
 const Header = () => {
-
     const { formUserInfo, toggleForm, toggleSearch } = useContext(commonContext);
     const { cartItems } = useContext(cartContext);
     const [isSticky, setIsSticky] = useState(false);
 
-
-    // handle the sticky-header
+    // Handle sticky header on scroll
     useEffect(() => {
-        const handleIsSticky = () => window.scrollY >= 50 ? setIsSticky(true) : setIsSticky(false);
+        const handleIsSticky = () => {
+            setIsSticky(window.scrollY >= 50);
+        };
 
         window.addEventListener('scroll', handleIsSticky);
 
         return () => {
             window.removeEventListener('scroll', handleIsSticky);
         };
-    }, [isSticky]);
-
+    }, []);
 
     const cartQuantity = cartItems.length;
-
 
     return (
         <>
@@ -47,8 +45,8 @@ const Header = () => {
                             </div>
                             
                             <div className="search_action">
-                                <span onClick={() => toggleSearch(true)}>
-                                    <AiOutlineSearch />
+                                <span onClick={() => toggleSearch(true)} role="button" tabIndex={0}>
+                                    <i className="search-icon" aria-label="Search" />
                                 </span>
                                 <div className="tooltip">Search</div>
                             </div>
@@ -56,11 +54,9 @@ const Header = () => {
                             <div className="cart_action">
                                 <Link to="/cart">
                                     <AiOutlineShoppingCart />
-                                    {
-                                        cartQuantity > 0 && (
-                                            <span className="badge">{cartQuantity}</span>
-                                        )
-                                    }
+                                    {cartQuantity > 0 && (
+                                        <span className="badge">{cartQuantity}</span>
+                                    )}
                                 </Link>
                                 <div className="tooltip">Cart</div>
                             </div>
@@ -72,28 +68,24 @@ const Header = () => {
                                 <div className="dropdown_menu">
                                     <h4>Hello! {formUserInfo && <Link to="*">&nbsp;{formUserInfo}</Link>}</h4>
                                     <p>Access account and manage orders</p>
-                                    {
-                                        !formUserInfo && (
-                                            <button
-                                                type="button"
-                                                onClick={() => toggleForm(true)}
-                                            >
-                                                Login / Signup
-                                            </button>
-                                        )
-                                    }
+                                    {!formUserInfo && (
+                                        <button
+                                            type="button"
+                                            onClick={() => toggleForm(true)}
+                                        >
+                                            Login / Signup
+                                        </button>
+                                    )}
                                     <div className="separator"></div>
                                     <ul>
-                                        {
-                                            dropdownMenu.map(item => {
-                                                const { id, link, path } = item;
-                                                return (
-                                                    <li key={id}>
-                                                        <Link to={path}>{link}</Link>
-                                                    </li>
-                                                );
-                                            })
-                                        }
+                                        {dropdownMenu.map(item => {
+                                            const { id, link, path } = item;
+                                            return (
+                                                <li key={id}>
+                                                    <Link to={path}>{link}</Link>
+                                                </li>
+                                            );
+                                        })}
                                     </ul>
                                 </div>
                             </div>
@@ -106,6 +98,13 @@ const Header = () => {
             <AccountForm />
         </>
     );
+};
+
+Header.propTypes = {
+    formUserInfo: PropTypes.string,
+    toggleForm: PropTypes.func,
+    toggleSearch: PropTypes.func,
+    cartItems: PropTypes.array
 };
 
 export default Header;
